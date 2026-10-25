@@ -1,0 +1,12 @@
+# Local document-review artifacts
+_docx_review_/
+.qa_doc*/
+
+# Operating-system files
+Thumbs.db
+.DS_Store
+
+# Editor and local environment files
+.vscode/
+.idea/
+*.log

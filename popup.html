@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Research Log</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header>
+        <p class="eyebrow">AI Coding Research</p>
+        <h1>Research log collector</h1>
+        <p class="intro">Small MVP for anonymous participants, AI interaction logs, and research export.</p>
+      </header>
+
+      <section class="panel participant-section">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Function 1</p>
+            <h2>Participant management</h2>
+          </div>
+          <span class="privacy-note">No names</span>
+        </div>
+
+        <form id="participant-form" class="compact-form">
+          <div class="grid two-columns">
+            <label>
+              Anonymous ID
+              <input id="new-participant-id" name="participantId" placeholder="P021" pattern="P[0-9]{3,}" required />
+            </label>
+            <label>
+              Course
+              <select id="new-course" name="course">
+                <option>PRF</option>
+                <option>PRO</option>
+                <option>PRN</option>
+                <option>SWP</option>
+                <option>Other</option>
+              </select>
+            </label>
+          </div>
+          <label>
+            Research group <span class="optional">optional</span>
+            <input id="new-group" name="group" placeholder="Treatment or Control" />
+          </label>
+          <button class="primary full-width" type="submit">Add participant</button>
+        </form>
+
+        <div id="participants" class="participants-list"></div>
+      </section>
+
+      <section class="panel">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Function 2</p>
+            <h2>Collect AI interaction</h2>
+          </div>
+        </div>
+
+      <form id="log-form">
+        <div class="grid two-columns">
+          <label>
+            Participant ID
+            <select id="participant-id" name="participantId" required>
+              <option value="">Add a participant first</option>
+            </select>
+          </label>
+          <label>
+            Task ID
+            <input id="task-id" name="taskId" placeholder="T02" required />
+          </label>
+        </div>
+
+        <div class="grid two-columns">
+          <label>
+            AI platform
+            <select id="platform" name="platform">
+              <option>ChatGPT</option>
+              <option>Claude</option>
+              <option>Gemini</option>
+              <option>Codex</option>
+              <option>Cursor</option>
+              <option>Copilot</option>
+              <option>Other</option>
+            </select>
+          </label>
+          <label>
+            AI plan
+            <select id="plan" name="plan">
+              <option>Unknown</option>
+              <option>Free</option>
+              <option>Paid</option>
+            </select>
+          </label>
+        </div>
+
+        <label>
+          Usage category
+          <select id="category" name="category">
+            <option value="">Not classified yet</option>
+            <option>Concept Explanation</option>
+            <option>Requirement Analysis</option>
+            <option>Solution Planning</option>
+            <option>Code Generation</option>
+            <option>Full Solution Request</option>
+            <option>Debugging</option>
+            <option>Code Explanation</option>
+            <option>Refactoring</option>
+            <option>Testing</option>
+            <option>Verification</option>
+          </select>
+        </label>
+
+        <label>
+          Prompt
+          <textarea id="prompt" name="prompt" rows="4" placeholder="Paste the student's prompt here" required></textarea>
+        </label>
+
+        <div class="selection-actions" aria-label="Use selected text">
+          <button class="secondary compact" id="use-selection-prompt" type="button">Use selected text in prompt</button>
+          <button class="secondary compact" id="use-selection-response" type="button">Use selected text in response</button>
+        </div>
+
+        <label>
+          AI response
+          <textarea id="response" name="response" rows="5" placeholder="Paste the AI response here" required></textarea>
+        </label>
+
+        <div class="actions">
+          <button class="primary" type="submit">Save interaction</button>
+          <button class="secondary" id="reset-form" type="button">Reset</button>
+        </div>
+      </form>
+      </section>
+
+      <section class="panel dataset-section">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Function 3</p>
+            <h2>Research dataset</h2>
+            <p id="log-count" class="sub-count">0 saved interactions</p>
+          </div>
+          <button class="text-button danger" id="clear-logs" type="button">Clear all</button>
+        </div>
+
+        <div class="export-actions">
+          <button class="secondary" id="export-json" type="button">Export JSON</button>
+          <button class="secondary" id="export-csv" type="button">Export CSV</button>
+        </div>
+
+        <p id="status" class="status" role="status"></p>
+        <div id="recent-logs" class="recent-logs"></div>
+      </section>
+    </main>
+    <script src="popup.js"></script>
+  </body>
+</html>
