@@ -8,6 +8,20 @@ const recentLogsEl = document.querySelector("#recent-logs");
 const logCountEl = document.querySelector("#log-count");
 const participantSelect = document.querySelector("#participant-id");
 const participantsEl = document.querySelector("#participants");
+const courseSelect = document.querySelector("#new-course");
+const otherCourseField = document.querySelector("#other-course-field");
+const otherCourseInput = document.querySelector("#other-course");
+const metricsTotalEl = document.querySelector("#metrics-total");
+const metricsListEl = document.querySelector("#metrics-list");
+
+const METRIC_CATEGORIES = [
+  { label: "Code Generation", categories: ["Code Generation"] },
+  { label: "Debugging", categories: ["Debugging"] },
+  { label: "Explanation", categories: ["Concept Explanation", "Code Explanation"] },
+  { label: "Verification", categories: ["Verification"] },
+  { label: "Full Solution Request", categories: ["Full Solution Request"] },
+  { label: "Testing", categories: ["Testing"] }
+];
 
 document.addEventListener("DOMContentLoaded", async () => {
   await renderParticipants();
@@ -21,6 +35,8 @@ document.querySelector("#export-csv").addEventListener("click", () => exportLogs
 document.querySelector("#clear-logs").addEventListener("click", clearLogs);
 document.querySelector("#use-selection-prompt").addEventListener("click", () => useSelectedText("prompt"));
 document.querySelector("#use-selection-response").addEventListener("click", () => useSelectedText("response"));
+courseSelect.addEventListener("change", updateOtherCourseField);
+updateOtherCourseField();
 
 async function getLogs() {
   const result = await chrome.storage.local.get({ [STORAGE_KEY]: [] });
@@ -36,12 +52,19 @@ async function saveParticipant(event) {
   event.preventDefault();
   const data = new FormData(participantForm);
   const participantId = data.get("participantId").trim().toUpperCase();
-  const course = data.get("course");
+  const selectedCourse = data.get("course");
+  const customCourse = data.get("otherCourse").trim().toUpperCase();
+  const course = selectedCourse === "Other" ? customCourse : selectedCourse;
   const group = data.get("group").trim();
   const participants = await getParticipants();
 
   if (!/^P\d{3,}$/.test(participantId)) {
     showStatus("Use an anonymous ID such as P001 or P021.", true);
+    return;
+  }
+
+  if (selectedCourse === "Other" && !/^[A-Z0-9][A-Z0-9 .-]{1,29}$/.test(customCourse)) {
+    showStatus("Enter a valid course code when using Other.", true);
     return;
   }
 
@@ -147,6 +170,7 @@ async function saveInteraction(event) {
 async function renderLogs() {
   const logs = await getLogs();
   logCountEl.textContent = `${logs.length} saved interaction${logs.length === 1 ? "" : "s"}`;
+  renderMetrics(logs);
 
   if (logs.length === 0) {
     recentLogsEl.innerHTML = '<p class="empty">No interactions saved yet.</p>';
@@ -168,6 +192,18 @@ async function renderLogs() {
       </article>`;
     })
     .join("");
+}
+
+function renderMetrics(logs) {
+  metricsTotalEl.textContent = `${logs.length} total prompt${logs.length === 1 ? "" : "s"}`;
+  metricsListEl.innerHTML = METRIC_CATEGORIES.map(({ label, categories }) => {
+    const count = logs.filter((log) => categories.includes(log.category)).length;
+    const percentage = logs.length ? (count / logs.length) * 100 : 0;
+    return `<div class="metric-row">
+      <span class="metric-label">${escapeHtml(label)}</span>
+      <span class="metric-value">${count} <span>${percentage.toFixed(1)}%</span></span>
+    </div>`;
+  }).join("");
 }
 
 async function exportLogs(format) {
@@ -245,6 +281,13 @@ function dateStamp() {
 function showStatus(message, isError = false) {
   statusEl.textContent = message;
   statusEl.classList.toggle("error", isError);
+}
+
+function updateOtherCourseField() {
+  const isOther = courseSelect.value === "Other";
+  otherCourseField.hidden = !isOther;
+  otherCourseInput.required = isOther;
+  if (!isOther) otherCourseInput.value = "";
 }
 
 function escapeHtml(value) {

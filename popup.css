@@ -140,6 +140,15 @@ button {
 .section-heading > .privacy-note,
 .section-heading > .text-button { position: absolute; top: 0; right: 0; }
 .export-actions { margin-bottom: 10px; }
+.metrics { margin: 14px 0 8px; padding: 12px; border: 1px solid #e5eaf1; border-radius: 10px; background: #f9fbfd; }
+.metrics-heading { display: flex; justify-content: space-between; align-items: end; gap: 10px; margin-bottom: 8px; }
+.metrics-heading h3 { margin: 0; font-size: 14px; }
+.metrics-heading .eyebrow { margin-bottom: 3px; }
+.metrics-heading .sub-count { margin: 0; text-align: right; }
+.metrics-list { display: grid; gap: 6px; }
+.metric-row { display: flex; justify-content: space-between; gap: 10px; color: #53647b; font-size: 12px; }
+.metric-value { color: #182230; font-weight: 750; white-space: nowrap; }
+.metric-value span { display: inline-block; min-width: 46px; color: #68778b; font-weight: 500; text-align: right; }
 .status { min-height: 18px; margin: 5px 0 8px; color: #2d7a4b; font-size: 12px; }
 .status.error { color: #b42318; }
 

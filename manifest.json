@@ -1,11 +1,19 @@
 {
   "manifest_version": 3,
   "name": "AI Coding Research Log Collector",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Save research AI interaction logs locally and export them as JSON or CSV.",
   "permissions": ["storage", "activeTab", "scripting"],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "ai-research-log@example.org",
+      "strict_min_version": "109.0"
+    }
+  },
   "action": {
-    "default_title": "AI Coding Research Log Collector",
-    "default_popup": "popup.html"
+    "default_title": "Open AI Coding Research Log Collector"
+  },
+  "background": {
+    "service_worker": "background.js"
   }
 }

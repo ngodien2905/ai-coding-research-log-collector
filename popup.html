@@ -31,7 +31,7 @@
             </label>
             <label>
               Course
-              <select id="new-course" name="course">
+              <select id="new-course" name="course" required>
                 <option>PRF</option>
                 <option>PRO</option>
                 <option>PRN</option>
@@ -40,6 +40,10 @@
               </select>
             </label>
           </div>
+          <label id="other-course-field" hidden>
+            Course code
+            <input id="other-course" name="otherCourse" placeholder="e.g. CSE101" maxlength="30" />
+          </label>
           <label>
             Research group <span class="optional">optional</span>
             <input id="new-group" name="group" placeholder="Treatment or Control" />
@@ -148,6 +152,17 @@
           <button class="secondary" id="export-json" type="button">Export JSON</button>
           <button class="secondary" id="export-csv" type="button">Export CSV</button>
         </div>
+
+        <section class="metrics" aria-labelledby="metrics-title">
+          <div class="metrics-heading">
+            <div>
+              <p class="eyebrow">Function 6</p>
+              <h3 id="metrics-title">Research metrics</h3>
+            </div>
+            <p id="metrics-total" class="sub-count">0 total prompts</p>
+          </div>
+          <div id="metrics-list" class="metrics-list"></div>
+        </section>
 
         <p id="status" class="status" role="status"></p>
         <div id="recent-logs" class="recent-logs"></div>
